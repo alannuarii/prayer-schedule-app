@@ -1,0 +1,188 @@
+/* Import Bootstrap */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Custom Variables */
+:root {
+  --primary: #4F86C6;
+  --background-light: #F9F1E7;
+  --background-dark: #1a202c;
+  --text-main-light: #1A1A1A;
+  --text-main-dark: #F7FAFC;
+  --text-sub-light: #4A4A4A;
+  --text-sub-dark: #A0AEC0;
+  --mosque-color-light: #CFE2F3;
+  --mosque-color-dark: #2a4365;
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100dvh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Light Mode (default) */
+body {
+  background: linear-gradient(to bottom, #F9F1E7 0%, #A9C9E1 100%);
+  color: var(--text-main-light);
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: linear-gradient(to bottom, #2D3748 0%, #1A202C 100%);
+  color: var(--text-main-dark);
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+}
+
+/* iOS Status Bar Style */
+.ios-status-bar {
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Home Indicator */
+.home-indicator {
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 100px;
+  z-index: 100;
+}
+
+body.dark-mode .home-indicator {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Custom Button Styles */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 312px;
+  height: 56px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.btn-google:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn-google:active {
+  transform: scale(0.95);
+}
+
+body.dark-mode .btn-google {
+  background: #2D3748;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Login Page Styles */
+.login-container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.5rem;
+  padding-bottom: 200px;
+  max-width: 448px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.login-logo {
+  margin-bottom: 2rem;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 4rem;
+  letter-spacing: 0.05em;
+  color: var(--text-sub-light);
+}
+
+body.dark-mode .login-subtitle {
+  color: var(--text-sub-dark);
+}
+
+/* Mosque Silhouette */
+.mosque-silhouette {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mosque-silhouette svg {
+  width: 100%;
+  height: auto;
+  fill: var(--mosque-color-light);
+}
+
+body.dark-mode .mosque-silhouette svg {
+  fill: var(--mosque-color-dark);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .login-title {
+    font-size: 40px;
+  }
+  
+  .login-subtitle {
+    font-size: 18px;
+  }
+}

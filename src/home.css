@@ -1,0 +1,218 @@
+/* Home Page Styles */
+.home-page {
+  background-color: #000000;
+  min-height: 100vh;
+  color: white;
+  padding-bottom: 2rem;
+}
+
+.home-header {
+  padding: 1rem 1.5rem;
+  padding-top: env(safe-area-inset-top, 10px);
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.status-icons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.main-clock-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.main-clock {
+  font-size: 3.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.date-display {
+  font-size: 0.875rem;
+  color: #888888;
+  font-weight: 300;
+  letter-spacing: 0.025em;
+}
+
+.theme-toggle {
+  background: rgba(31, 41, 55, 0.5);
+  padding: 0.375rem;
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+/* Active Prayer Card */
+.active-prayer-card {
+  margin: 0 1rem 1.5rem 1rem;
+  background: linear-gradient(160deg, rgba(35,35,35,0.95) 0%, rgba(20,20,20,0.98) 100%);
+  border-radius: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #2ecc71;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.prayer-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #2ecc71;
+  opacity: 0.03;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prayer-name-large {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.prayer-status {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
+
+/* Progress Bar */
+.progress-container {
+  position: relative;
+  width: 100%;
+  height: 0.5rem;
+  background-color: #374151;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: #2ecc71;
+  border-radius: 9999px;
+  box-shadow: 0 0 10px #2EDB96;
+}
+
+.progress-thumb {
+  position: absolute;
+  background-color: #2ecc71;
+  border-radius: 9999px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(46,204,113,0.6);
+  z-index: 10;
+  border: 2px solid #1C1C1E;
+  transform: translateX(-50%);
+}
+
+.time-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #D1D5DB;
+  margin-top: 0.75rem;
+}
+
+.next-time {
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Prayer List */
+.prayer-list {
+  padding: 0 1rem 2.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.glass-card {
+  background-color: #1C1C1E;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.glass-card.active {
+  border: 1px solid rgba(46, 204, 113, 0.5);
+  background-color: rgba(46, 204, 113, 0.05);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.prayer-item-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.prayer-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #D1D5DB;
+}
+
+.glass-card.active .prayer-icon {
+  color: #2ecc71;
+}
+
+.prayer-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.glass-card.active .prayer-name {
+  color: #2ecc71;
+  font-weight: 700;
+}
+
+.prayer-time {
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.glass-card.active .prayer-time {
+  color: #2ecc71;
+  font-weight: 700;
+}

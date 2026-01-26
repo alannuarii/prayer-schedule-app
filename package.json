@@ -1,0 +1,22 @@
+{
+  "name": "prayer-schedule-app",
+  "version": "1.0.0",
+  "description": "Aplikasi Jadwal Sholat dengan SolidStart",
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.15.3",
+    "@solidjs/start": "^1.0.12",
+    "solid-js": "^1.9.4",
+    "vinxi": "^0.5.3",
+    "bootstrap": "^5.3.3"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}
