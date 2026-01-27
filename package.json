@@ -17,8 +17,5 @@
   },
   "engines": {
     "node": ">=22"
-  },
-  "devDependencies": {
-    "vite-plugin-pwa": "^1.2.0"
   }
 }
