@@ -1,10 +1,9 @@
-/* Home Page Styles */
 .home-page {
-  background-color: transparent; /* Use body background */
+  max-width: 480px;
+  margin: 2rem auto;
   min-height: 100vh;
   color: inherit;
-  /* padding-bottom: 2rem; */
-  margin: 2rem 0;
+  position: relative;
   transition: color 0.3s ease;
 }
 
@@ -256,4 +255,66 @@ body.light-mode .prayer-icon {
 .glass-card.active .prayer-time {
   color: #2ecc71;
   font-weight: 700;
+}
+
+/* Location Info & Reset Button */
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  color: #D1D5DB;
+  font-size: 0.875rem;
+}
+
+body.light-mode .location-info {
+  color: #4B5563;
+}
+
+.location-info .material-icons {
+  font-size: 1rem;
+  color: #2ecc71;
+}
+
+.city-name {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.reset-btn {
+  margin-left: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: inherit;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn .material-icons {
+  font-size: 0.875rem;
+  color: inherit;
+}
+
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Countdown Tag */
+.countdown-tag {
+  color: #2ecc71;
+  font-weight: 700;
+  margin-left: 0.25rem;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
 }

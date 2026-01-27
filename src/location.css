@@ -1,11 +1,12 @@
-/* Location Page Styles */
 .location-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem;
   background-color: #242B36;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: white;
-  padding: 2rem 0;
 }
 
 .location-header {

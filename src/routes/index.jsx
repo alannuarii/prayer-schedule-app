@@ -15,6 +15,8 @@ export default function Home() {
   const [activePrayer, setActivePrayer] = createSignal(null);
   const [progress, setProgress] = createSignal(0);
   const [isDarkMode, setIsDarkMode] = createSignal(true); 
+  const [countdown, setCountdown] = createSignal(null);
+  const [countdownMode, setCountdownMode] = createSignal('default'); // 'entering', 'after', 'before', 'default'
 
   // Update clock every second
   const timer = setInterval(() => {
@@ -59,6 +61,8 @@ export default function Home() {
 
   // Re-calculate prayer status when current time updates
   createEffect(() => {
+    // Calling currentTime() here makes this effect track every second
+    const time = currentTime();
     if (prayerData()) {
       calculatePrayerStatus(prayerData());
     }
@@ -112,8 +116,53 @@ export default function Home() {
       setProgress(100);
     }
 
+    // Precise timing in seconds for smooth countdown/countup
+    const currentTimeSeconds = currentHours * 3600 + currentMinutes * 60 + now.getSeconds();
+    
+    // Calculate seconds for Current and Next
+    const [ch, cm] = current.time.split(':').map(Number);
+    let cSeconds = ch * 3600 + cm * 60;
+    
+    const [uh, um] = upcoming.time.split(':').map(Number);
+    let uSeconds = uh * 3600 + um * 60;
+
+    // Handle wrap around (Isya -> next day Imsak)
+    if (uSeconds <= cSeconds) {
+      if (currentTimeSeconds >= cSeconds) {
+        uSeconds += 86400; // Next is tomorrow
+      } else {
+        cSeconds -= 86400; // Current was yesterday
+      }
+    }
+
+    const elapsed = currentTimeSeconds - cSeconds;
+    const remaining = uSeconds - currentTimeSeconds;
+
+    if (elapsed >= 0 && elapsed < 60) {
+      setCountdownMode('entering');
+      setCountdown(null);
+    } else if (elapsed > 0 && elapsed <= 1800) {
+      setCountdownMode('after');
+      const m = Math.floor(elapsed / 60);
+      const s = elapsed % 60;
+      setCountdown(`${m} Menit ${s} Detik`);
+    } else if (remaining > 0 && remaining <= 1800) {
+      setCountdownMode('before');
+      const m = Math.floor(remaining / 60);
+      const s = remaining % 60;
+      setCountdown(`${m} Menit ${s} Detik`);
+    } else {
+      setCountdownMode('default');
+      setCountdown(null);
+    }
+
     setNextPrayer(upcoming);
     setActivePrayer(current);
+  };
+
+  const resetLocation = () => {
+    localStorage.removeItem("selectedCity");
+    navigate("/lokasi", { replace: true });
   };
 
   const formatDate = (date) => {
@@ -121,7 +170,16 @@ export default function Home() {
     return date.toLocaleDateString('id-ID', options);
   };
     
-  const hijriDate = () => prayerData()?.tanggal || "14 Rajab 1447 H";
+  const hijriDate = () => {
+    try {
+      const date = currentTime();
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const formatter = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura-nu-latn', options);
+      return formatter.format(date) + " H";
+    } catch (e) {
+      return prayerData()?.tanggal || "";
+    }
+  };
 
   const toggleTheme = () => {
     const newMode = !isDarkMode();
@@ -150,6 +208,14 @@ export default function Home() {
             <p class="date-display">
               {formatDate(currentTime())} | {hijriDate()}
             </p>
+            <div class="location-info">
+              <span class="material-icons">location_on</span>
+              <span class="city-name">{cityData()?.lokasi || "Memuat..."}</span>
+              <button class="reset-btn" onClick={resetLocation}>
+                <span class="material-icons">refresh</span>
+                Ganti
+              </button>
+            </div>
           </div>
           <button class="theme-toggle" onClick={toggleTheme}>
              <div style={{
@@ -202,8 +268,13 @@ export default function Home() {
             </div>
           </div>
           
-          <div class="time-labels">
-            <span>± Menuju {nextPrayer().name}</span>
+            <div class="time-labels">
+            <span>
+              {countdownMode() === 'entering' && <>Waktu Memasuki <span class="countdown-tag">{activePrayer().name}</span></>}
+              {countdownMode() === 'after' && <>± <span class="countdown-tag">{countdown()}</span> Setelah Waktu {activePrayer().name}</>}
+              {countdownMode() === 'before' && <>± <span class="countdown-tag">{countdown()}</span> Menuju {nextPrayer().name}</>}
+              {countdownMode() === 'default' && <>± Menuju {nextPrayer().name}</>}
+            </span>
             <span class="next-time">{nextPrayer().time}</span>
           </div>
         </section>
@@ -215,16 +286,28 @@ export default function Home() {
             <div class="text-center py-10 white-text">Loading Data...</div>
         ) : prayerData() && (
             <>
-                {[
-                  { key: 'imsak', label: 'Imsak', icon: 'schedule' },
-                  { key: 'subuh', label: 'Subuh', icon: 'dark_mode' },
-                  { key: 'terbit', label: 'Terbit', icon: 'wb_twilight' },
-                  { key: 'dhuha', label: 'Dhuha', icon: 'wb_sunny' },
-                  { key: 'dzuhur', label: 'Dzuhur', icon: 'wb_sunny' },
-                  { key: 'ashar', label: 'Ashar', icon: 'wb_sunny' },
-                  { key: 'maghrib', label: 'Maghrib', icon: 'nights_stay' },
-                  { key: 'isya', label: 'Isya', icon: 'bedtime' }
-                ].map((item) => {
+                {(() => {
+                  const baseList = [
+                    { key: 'imsak', label: 'Imsak', icon: 'schedule' },
+                    { key: 'subuh', label: 'Subuh', icon: 'dark_mode' },
+                    { key: 'terbit', label: 'Terbit', icon: 'wb_twilight' },
+                    { key: 'dhuha', label: 'Dhuha', icon: 'wb_sunny' },
+                    { key: 'dzuhur', label: 'Dzuhur', icon: 'wb_sunny' },
+                    { key: 'ashar', label: 'Ashar', icon: 'wb_sunny' },
+                    { key: 'maghrib', label: 'Maghrib', icon: 'nights_stay' },
+                    { key: 'isya', label: 'Isya', icon: 'bedtime' }
+                  ];
+                  
+                  const activeIndex = baseList.findIndex(item => item.label === activePrayer()?.name);
+                  if (activeIndex === -1) return baseList.map(renderItem);
+                  
+                  // Reorder: Active one first, then the rest in cycle
+                  const reordered = [
+                    ...baseList.slice(activeIndex),
+                    ...baseList.slice(0, activeIndex)
+                  ];
+                  
+                  function renderItem(item) {
                     const isActive = activePrayer()?.name === item.label;
                     return (
                         <div class={`glass-card ${isActive ? 'active' : ''}`}>
@@ -237,7 +320,10 @@ export default function Home() {
                             <span class="prayer-time">{prayerData()[item.key]}</span>
                         </div>
                     );
-                })}
+                  }
+                  
+                  return reordered.map(renderItem);
+                })()}
             </>
         )}
       </main>
