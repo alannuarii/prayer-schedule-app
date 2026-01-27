@@ -1,7 +1,8 @@
 import { createSignal, onMount, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
+
 import { fetchAllCities } from "../lib/api";
-import { saveSelectedCity, hasLocation } from "../lib/storage";
+import { saveSelectedCity } from "../lib/storage";
 
 export default function Lokasi() {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ export default function Lokasi() {
   const [error, setError] = createSignal(null);
 
   onMount(async () => {
+
+
     try {
       const data = await fetchAllCities();
       setCities(data);
@@ -24,7 +27,7 @@ export default function Lokasi() {
   // Filter cities based on search query
   const filteredCities = () => {
     const query = searchQuery().toLowerCase();
-    if (!query) return cities();
+    if (!query) return [];
 
     return cities().filter((city) => city.lokasi.toLowerCase().includes(query));
   };
@@ -68,7 +71,7 @@ export default function Lokasi() {
         {error() && <div class="text-center py-4 text-red-400">{error()}</div>}
 
         {/* Location List */}
-        {!loading() && !error() && (
+        {!loading() && !error() && searchQuery().length > 0 && (
           <div class="location-list">
             <For each={filteredCities()}>
               {(city) => (

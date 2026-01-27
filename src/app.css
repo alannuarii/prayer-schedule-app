@@ -50,11 +50,13 @@ body.dark-mode {
 
 /* iOS Status Bar Style */
 .ios-status-bar {
-  height: 44px;
+  height: env(safe-area-inset-top, 44px);
+  padding-top: env(safe-area-inset-top, 0);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   font-weight: 600;
   font-size: 15px;
 }
@@ -76,113 +78,4 @@ body.dark-mode .home-indicator {
   background: rgba(255, 255, 255, 0.8);
 }
 
-/* Custom Button Styles */
-.btn-google {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  max-width: 312px;
-  height: 56px;
-  background: white;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-size: 16px;
-  font-weight: 500;
-  color: #374151;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
 
-.btn-google:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.btn-google:active {
-  transform: scale(0.95);
-}
-
-body.dark-mode .btn-google {
-  background: #2D3748;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Login Page Styles */
-.login-container {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 1.5rem;
-  padding-bottom: 200px;
-  max-width: 448px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.login-logo {
-  margin-bottom: 2rem;
-}
-
-.login-title {
-  font-size: 32px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.login-subtitle {
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 4rem;
-  letter-spacing: 0.05em;
-  color: var(--text-sub-light);
-}
-
-body.dark-mode .login-subtitle {
-  color: var(--text-sub-dark);
-}
-
-/* Mosque Silhouette */
-.mosque-silhouette {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.mosque-silhouette svg {
-  width: 100%;
-  height: auto;
-  fill: var(--mosque-color-light);
-}
-
-body.dark-mode .mosque-silhouette svg {
-  fill: var(--mosque-color-dark);
-}
-
-/* Responsive */
-@media (min-width: 768px) {
-  .login-title {
-    font-size: 40px;
-  }
-  
-  .login-subtitle {
-    font-size: 18px;
-  }
-}

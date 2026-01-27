@@ -3,3 +3,5 @@ node_modules
 .vinxi
 .git
 .gitignore
+Dockerfile
+README.md
