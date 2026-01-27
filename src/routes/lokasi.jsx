@@ -25,10 +25,8 @@ export default function Lokasi() {
   const filteredCities = () => {
     const query = searchQuery().toLowerCase();
     if (!query) return cities();
-    
-    return cities().filter(city => 
-      city.lokasi.toLowerCase().includes(query)
-    );
+
+    return cities().filter((city) => city.lokasi.toLowerCase().includes(query));
   };
 
   const handleSelectCity = (city) => {
@@ -56,13 +54,7 @@ export default function Lokasi() {
         {/* Search Bar */}
         <div class="search-container">
           <span class="material-icons text-gray-400">search</span>
-          <input 
-            type="text" 
-            class="search-input" 
-            placeholder="Cari Lokasi Sholat"
-            value={searchQuery()}
-            onInput={(e) => setSearchQuery(e.target.value)}
-          />
+          <input type="text" class="search-input" placeholder="Cari Lokasi Sholat" value={searchQuery()} onInput={(e) => setSearchQuery(e.target.value)} />
         </div>
 
         {/* Current Location Button */}
@@ -82,53 +74,17 @@ export default function Lokasi() {
               {(city) => (
                 <div class="location-item" onClick={() => handleSelectCity(city)}>
                   <span class="location-name">{city.lokasi}</span>
-                  <span class="material-icons" style="color: #3b82f6; font-size: 20px;">chevron_right</span>
+                  <span class="material-icons" style="color: #3b82f6; font-size: 20px;">
+                    chevron_right
+                  </span>
                 </div>
               )}
             </For>
 
-            {filteredCities().length === 0 && (
-              <div class="p-4 text-center text-gray-500">
-                Kota tidak ditemukan
-              </div>
-            )}
+            {filteredCities().length === 0 && <div class="p-4 text-center text-gray-500">Kota tidak ditemukan</div>}
           </div>
         )}
       </main>
-
-      {/* Bottom Navigation */}
-      <footer class="bottom-nav">
-        <a href="/" class="nav-item">
-          <span class="material-icons nav-icon">home</span>
-          <span class="nav-label">Home</span>
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-icons nav-icon">calendar_today</span>
-          <span class="nav-label">Jadwal</span>
-        </a>
-        {/* Active Item Example - if this was the locations page in nav, it would be active. 
-            However, the design shows 'Home' as active in footer, but we are on 'Select Location'. 
-            Based on the prompt "Select Location Screen", this might be a separate flow or part of 'Profile'/'Settings'.
-            The prompt says flow is Login -> Location -> Main. 
-            So this page is technically part of the setup. 
-            But the footer shows Home/Jadwal/Qibla/Profile.
-            I will leave Home active or none active? 
-            The image shows Home active. I'll stick to the snippet.
-        */}
-        <a href="#" class="nav-item active">
-          <span class="material-icons nav-icon" style="color: #3b82f6">explore</span> {/* Qibla icon proxy */}
-          <span class="nav-label" style="color: #3b82f6">Lokasi</span> 
-          {/* Wait, the snippet had Home, Jadwal, Qibla, Profile. 
-              The page is "Select Location". 
-              Usually location selection is distinct. 
-              I'll just replicate the footer from the snippet roughly.
-          */}
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-icons nav-icon">person</span>
-          <span class="nav-label">Profile</span>
-        </a>
-      </footer>
     </div>
   );
 }
