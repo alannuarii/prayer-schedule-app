@@ -10,8 +10,8 @@ export default defineConfig({
                     name: 'Jadwal Sholat',
                     short_name: 'Jadwal Sholat',
                     description: 'Aplikasi Jadwal Sholat Harian',
-                    theme_color: '#4F86C6',
-                    background_color: '#4F86C6',
+                    theme_color: '#1A1A1A',
+                    background_color: '#1A1A1A',
                     display: 'standalone',
                     start_url: '/',
                     icons: [
