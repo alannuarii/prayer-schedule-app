@@ -4,7 +4,7 @@
   "description": "Aplikasi Jadwal Sholat dengan SolidStart",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev --port 3001",
+    "dev": "vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start"
   },
