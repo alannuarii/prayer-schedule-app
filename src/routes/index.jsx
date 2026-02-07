@@ -169,17 +169,6 @@ export default function Home() {
     const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString('id-ID', options);
   };
-    
-  const hijriDate = () => {
-    try {
-      const date = currentTime();
-      const options = { day: 'numeric', month: 'long', year: 'numeric' };
-      const formatter = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura-nu-latn', options);
-      return formatter.format(date) + " H";
-    } catch (e) {
-      return prayerData()?.tanggal || "";
-    }
-  };
 
   const toggleTheme = () => {
     const newMode = !isDarkMode();
@@ -206,7 +195,7 @@ export default function Home() {
               {currentTime().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/\./g, ':')}
             </h1>
             <p class="date-display">
-              {formatDate(currentTime())} | {hijriDate()}
+              {formatDate(currentTime())}
             </p>
             <div class="location-info">
               <span class="material-icons">location_on</span>
