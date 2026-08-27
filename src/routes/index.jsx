@@ -19,6 +19,7 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = createSignal(true); 
   const [countdown, setCountdown] = createSignal(null);
   const [countdownMode, setCountdownMode] = createSignal('default'); // 'entering', 'after', 'before', 'default'
+  const [isSubscribed, setIsSubscribed] = createSignal(false);
 
   // Update clock every second
   const timer = setInterval(() => {
@@ -35,9 +36,21 @@ export default function Home() {
       document.body.classList.remove("dark-mode");
       document.body.classList.add("light-mode");
     } else {
+    } else {
       setIsDarkMode(true);
       document.body.classList.add("dark-mode");
       document.body.classList.remove("light-mode");
+    }
+
+    // Check if already subscribed to push notifications
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg) {
+          reg.pushManager.getSubscription().then(sub => {
+            if (sub) setIsSubscribed(true);
+          });
+        }
+      });
     }
 
     // 2. Location Check
@@ -183,6 +196,7 @@ export default function Home() {
       const city = cityData();
       if (!city) return;
       await subscribeUserToPush(city.id);
+      setIsSubscribed(true);
       alert("Notifikasi sholat berhasil diaktifkan!");
     } catch (err) {
       alert(err.message || "Gagal mengaktifkan notifikasi.");
@@ -216,17 +230,30 @@ export default function Home() {
             <p class="date-display">
               {formatDate(currentTime())}
             </p>
-            <div class="location-info">
-              <span class="material-icons">location_on</span>
-              <span class="city-name">{cityData()?.lokasi || "Memuat..."}</span>
-              <button class="reset-btn" onClick={resetLocation}>
-                <span class="material-icons">refresh</span>
-                Ganti
-              </button>
-              <button class="reset-btn" onClick={enableNotifications} style={{ "margin-left": "8px", background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6" }}>
-                <span class="material-icons">notifications_active</span>
-                Aktifkan
-              </button>
+            <div class="location-container" style={{ display: 'flex', "flex-direction": 'column', gap: '12px', "margin-top": '8px' }}>
+              <div class="location-info" style={{ display: 'flex', "align-items": 'center' }}>
+                <span class="material-icons">location_on</span>
+                <span class="city-name">{cityData()?.lokasi || "Memuat..."}</span>
+              </div>
+              <div class="action-buttons" style={{ display: 'flex', gap: '8px' }}>
+                <button class="reset-btn" onClick={resetLocation}>
+                  <span class="material-icons">refresh</span>
+                  Ganti
+                </button>
+                <button 
+                  class="reset-btn" 
+                  onClick={enableNotifications} 
+                  disabled={isSubscribed()}
+                  style={{ 
+                    background: isSubscribed() ? "rgba(16, 185, 129, 0.2)" : "rgba(59, 130, 246, 0.2)", 
+                    color: isSubscribed() ? "#10b981" : "#3b82f6",
+                    cursor: isSubscribed() ? "default" : "pointer"
+                  }}
+                >
+                  <span class="material-icons">{isSubscribed() ? 'check_circle' : 'notifications_active'}</span>
+                  {isSubscribed() ? 'Aktif' : 'Aktifkan'}
+                </button>
+              </div>
             </div>
           </div>
           <button class="theme-toggle" onClick={toggleTheme}>
