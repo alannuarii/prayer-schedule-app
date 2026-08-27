@@ -234,7 +234,7 @@ export default function Home() {
                 <span class="material-icons">location_on</span>
                 <span class="city-name">{cityData()?.lokasi || "Memuat..."}</span>
               </div>
-              <div class="action-buttons" style={{ display: 'flex', gap: '8px' }}>
+              <div class="action-buttons" style={{ display: 'flex', gap: '8px', "flex-wrap": 'wrap' }}>
                 <button class="reset-btn" onClick={resetLocation}>
                   <span class="material-icons">refresh</span>
                   Ganti
@@ -252,6 +252,19 @@ export default function Home() {
                   <span class="material-icons">{isSubscribed() ? 'check_circle' : 'notifications_active'}</span>
                   {isSubscribed() ? 'Aktif' : 'Aktifkan'}
                 </button>
+                <button 
+                  class="reset-btn" 
+                  onClick={() => navigate("/kiblat")}
+                  style={{ 
+                    background: "rgba(16, 185, 129, 0.15)", 
+                    color: "#10b981",
+                    border: "1px solid rgba(16, 185, 129, 0.3)",
+                    cursor: "pointer"
+                  }}
+                >
+                  <span class="material-icons">explore</span>
+                  Arah Kiblat
+                </button>
               </div>
             </div>
           </div>
@@ -259,12 +272,12 @@ export default function Home() {
              <div style={{
                 width: "48px",
                 height: "28px",
-                background: "#2C2C2E",
+                background: isDarkMode() ? "#2C2C2E" : "#E2E8F0",
                 "border-radius": "99px",
                 position: "relative",
                 display: "flex",
                 "align-items": "center",
-                border: "1px solid rgba(255,255,255,0.05)",
+                border: isDarkMode() ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0,0,0,0.1)",
                 transition: "all 0.3s ease"
              }}>
                 <div style={{

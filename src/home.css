@@ -296,6 +296,10 @@ body.light-mode .location-info {
   transition: all 0.2s;
 }
 
+.action-buttons .reset-btn {
+  margin-left: 0;
+}
+
 .reset-btn .material-icons {
   font-size: 0.875rem;
   color: inherit;

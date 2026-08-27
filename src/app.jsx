@@ -5,6 +5,7 @@ import { FileRoutes } from "@solidjs/start/router";
 import "./app.css";
 import "./location.css";
 import "./home.css";
+import "./kiblat.css";
 
 export default function App() {
   return (
