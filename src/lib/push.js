@@ -31,6 +31,11 @@ export async function subscribeUserToPush(cityId) {
   // Fetch VAPID public key
   const response = await fetch("/api/vapidPublicKey");
   const { publicKey } = await response.json();
+  
+  if (!publicKey) {
+    throw new Error("VAPID Public Key belum terkonfigurasi di server.");
+  }
+
   const applicationServerKey = urlBase64ToUint8Array(publicKey);
 
   // Subscribe
