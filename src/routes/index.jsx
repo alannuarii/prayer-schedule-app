@@ -36,7 +36,6 @@ export default function Home() {
       document.body.classList.remove("dark-mode");
       document.body.classList.add("light-mode");
     } else {
-    } else {
       setIsDarkMode(true);
       document.body.classList.add("dark-mode");
       document.body.classList.remove("light-mode");
