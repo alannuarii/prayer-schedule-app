@@ -3,6 +3,7 @@ import { useNavigate } from "@solidjs/router";
 
 import { fetchAllCities } from "../lib/api";
 import { saveSelectedCity } from "../lib/storage";
+import { detectLocationCity } from "../lib/location";
 
 export default function Lokasi() {
   const navigate = useNavigate();
@@ -38,11 +39,16 @@ export default function Lokasi() {
     navigate("/", { replace: true });
   };
 
-  const handleCurrentLocation = () => {
-    // Placeholder for geolocation functionality
-    // Ideally we would get coordinates and find the nearest city
-    // For now, let's just show an alert or console log
-    alert("Fitur deteksi lokasi otomatis akan segera hadir!");
+  const handleCurrentLocation = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const city = await detectLocationCity();
+      handleSelectCity(city);
+    } catch (err) {
+      setError(err.message || "Gagal mendeteksi lokasi secara otomatis.");
+      setLoading(false);
+    }
   };
 
   return (

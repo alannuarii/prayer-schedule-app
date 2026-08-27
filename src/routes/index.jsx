@@ -1,8 +1,10 @@
 import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 
-import { getSelectedCity } from "../lib/storage";
+import { getSelectedCity, saveSelectedCity } from "../lib/storage";
 import { fetchPrayerSchedule, getTodayDate } from "../lib/api";
+import { detectLocationCity } from "../lib/location";
+import { subscribeUserToPush } from "../lib/push";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -39,10 +41,16 @@ export default function Home() {
     }
 
     // 2. Location Check
-    const city = getSelectedCity();
+    let city = getSelectedCity();
     if (!city) {
-      navigate("/lokasi", { replace: true });
-      return;
+      try {
+        city = await detectLocationCity();
+        saveSelectedCity(city);
+      } catch (err) {
+        console.error("Auto location failed:", err);
+        navigate("/lokasi", { replace: true });
+        return;
+      }
     }
     setCityData(city);
     
@@ -170,6 +178,17 @@ export default function Home() {
     return date.toLocaleDateString('id-ID', options);
   };
 
+  const enableNotifications = async () => {
+    try {
+      const city = cityData();
+      if (!city) return;
+      await subscribeUserToPush(city.id);
+      alert("Notifikasi sholat berhasil diaktifkan!");
+    } catch (err) {
+      alert(err.message || "Gagal mengaktifkan notifikasi.");
+    }
+  };
+
   const toggleTheme = () => {
     const newMode = !isDarkMode();
     setIsDarkMode(newMode);
@@ -203,6 +222,10 @@ export default function Home() {
               <button class="reset-btn" onClick={resetLocation}>
                 <span class="material-icons">refresh</span>
                 Ganti
+              </button>
+              <button class="reset-btn" onClick={enableNotifications} style={{ "margin-left": "8px", background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6" }}>
+                <span class="material-icons">notifications_active</span>
+                Aktifkan
               </button>
             </div>
           </div>

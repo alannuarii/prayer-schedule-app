@@ -72,3 +72,35 @@ self.addEventListener('fetch', (event) => {
             })
     );
 });
+
+// Push notification event
+self.addEventListener("push", function (event) {
+  if (event.data) {
+    const data = event.data.json();
+    const options = {
+      body: data.body,
+      icon: data.icon || "/icon.png",
+      vibrate: [200, 100, 200, 100, 200, 100, 200],
+      requireInteraction: true
+    };
+    event.waitUntil(self.registration.showNotification(data.title, options));
+  }
+});
+
+// Notification click event
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: "window" }).then((clientList) => {
+      for (let i = 0; i < clientList.length; i++) {
+        let client = clientList[i];
+        if (client.url === "/" && "focus" in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow("/");
+      }
+    })
+  );
+});
