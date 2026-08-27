@@ -34,7 +34,7 @@ pipeline {
                 sh 'docker rm -f ${IMAGE_NAME} || true'
                 
                 // Run the new container, exposing port 3001
-                sh 'docker run -d --name ${IMAGE_NAME} -p 3001:3000 --restart always ${IMAGE_NAME}:latest'
+                sh 'docker run -d --name ${IMAGE_NAME} --env-file .env -p 3001:3000 --restart always ${IMAGE_NAME}:latest'
             }
         }
     }
