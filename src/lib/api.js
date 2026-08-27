@@ -7,11 +7,31 @@ const BASE_URL = "https://api.myquran.com/v2/sholat";
  * @returns {Promise<Array>} Array of city objects with id and lokasi
  */
 export async function fetchAllCities() {
+    // Check localStorage cache first for instantaneous response
+    if (typeof localStorage !== "undefined") {
+        try {
+            const cached = localStorage.getItem("all_cities_cache");
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    return parsed;
+                }
+            }
+        } catch (e) {
+            console.warn("Failed to read cities cache:", e);
+        }
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/kota/semua`);
         const data = await response.json();
 
-        if (data.status) {
+        if (data.status && Array.isArray(data.data)) {
+            if (typeof localStorage !== "undefined") {
+                try {
+                    localStorage.setItem("all_cities_cache", JSON.stringify(data.data));
+                } catch (e) {}
+            }
             return data.data;
         }
         throw new Error("Failed to fetch cities");
