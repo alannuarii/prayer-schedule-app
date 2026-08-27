@@ -16,6 +16,7 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 withCredentials([file(credentialsId: 'prayer-schedule-env', variable: 'ENV_FILE')]) {
+                    sh 'rm -f .env || true'
                     sh 'cp $ENV_FILE .env'
                 }
             }
