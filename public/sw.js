@@ -38,6 +38,14 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+
+    // Jangan intercept request ke domain luar (misalnya API push-notify-service)
+    // agar error CORS atau network murni bisa diterima oleh aplikasi (bukan halaman HTML).
+    if (url.origin !== self.location.origin) {
+        return; 
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then((response) => {
@@ -66,8 +74,11 @@ self.addEventListener('fetch', (event) => {
 
                     return response;
                 }).catch(() => {
-                    // Network failed, return cached version if available
-                    return caches.match('/');
+                    // Network failed, return cached versi offline (/) 
+                    // HANYA JIKA yang diminta adalah halaman web (navigation)
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('/');
+                    }
                 });
             })
     );
