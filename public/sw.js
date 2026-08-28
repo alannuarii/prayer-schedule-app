@@ -74,32 +74,41 @@ self.addEventListener('fetch', (event) => {
 });
 
 // Push notification event
-self.addEventListener("push", function (event) {
+self.addEventListener('push', function(event) {
   if (event.data) {
     const data = event.data.json();
     const options = {
-      body: data.body,
-      icon: data.icon || "/icon.png",
-      vibrate: [200, 100, 200, 100, 200, 100, 200],
-      requireInteraction: true
+      body: data.body || '',
+      icon: data.icon || '/icon-192.png',
+      badge: data.badge || '/icon-192.png',
+      image: data.image || null,
+      vibrate: data.vibrate || [200, 100, 200, 100, 200, 100, 200],
+      data: data.data || {}
     };
-    event.waitUntil(self.registration.showNotification(data.title, options));
+
+    event.waitUntil(
+      self.registration.showNotification(data.title, options)
+    );
   }
 });
 
 // Notification click event
-self.addEventListener("notificationclick", function (event) {
+self.addEventListener('notificationclick', function(event) {
   event.notification.close();
+  const targetUrl = event.notification.data && event.notification.data.url 
+    ? event.notification.data.url 
+    : '/';
+
   event.waitUntil(
-    clients.matchAll({ type: "window" }).then((clientList) => {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
       for (let i = 0; i < clientList.length; i++) {
-        let client = clientList[i];
-        if (client.url === "/" && "focus" in client) {
+        const client = clientList[i];
+        if (client.url === targetUrl && 'focus' in client) {
           return client.focus();
         }
       }
       if (clients.openWindow) {
-        return clients.openWindow("/");
+        return clients.openWindow(targetUrl);
       }
     })
   );

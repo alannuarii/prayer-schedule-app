@@ -28,33 +28,38 @@ export async function subscribeUserToPush(cityId) {
   // Register service worker
   const registration = await navigator.serviceWorker.register("/sw.js");
 
-  // Fetch VAPID public key
-  const response = await fetch("/api/vapidPublicKey");
+  // Fetch VAPID public key dari Universal Push Service
+  const response = await fetch("https://push-notify.serveer.biz.id/api/v1/vapid-public-key");
   const { publicKey } = await response.json();
   
   if (!publicKey) {
-    throw new Error("VAPID Public Key belum terkonfigurasi di server.");
+    throw new Error("VAPID Public Key gagal diambil dari server notifikasi.");
   }
 
   const applicationServerKey = urlBase64ToUint8Array(publicKey);
 
-  // Subscribe
+  // Subscribe ke PushManager Browser
   const subscription = await registration.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey
   });
 
-  // Send subscription to server
-  const subResponse = await fetch("/api/subscribe", {
+  // Send subscription ke Universal Push Service
+  const subResponse = await fetch("https://push-notify.serveer.biz.id/api/v1/subscriptions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ subscription, cityId })
+    body: JSON.stringify({ 
+      appId: "prayer-schedule",
+      subscription: subscription,
+      topic: "prayer_schedule",
+      tags: { cityId: String(cityId) }
+    })
   });
 
   if (!subResponse.ok) {
-    throw new Error("Failed to save subscription on server.");
+    throw new Error("Failed to save subscription on push server.");
   }
 
   return true;
